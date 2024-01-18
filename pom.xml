@@ -17,7 +17,10 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
-
+		
+		<okta-spring.version>2.1.0</okta-spring.version>
+		<logstash.version>6.3</logstash.version>
+		
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>			
 		<timestamp>${maven.build.timestamp}</timestamp>
@@ -32,7 +35,7 @@
 		<dependency>
 			<groupId>com.okta.spring</groupId>
 			<artifactId>okta-spring-boot-starter</artifactId>
-			<version>2.1.0</version>
+			<version>${okta-spring.version}</version>
 		</dependency>
 		<!-- Sleuth with Brave tracer implementation -->
 		<dependency>
@@ -53,7 +56,7 @@
 		<dependency>
 		  <groupId>net.logstash.logback</groupId>
 		  <artifactId>logstash-logback-encoder</artifactId>
-		  <version>6.2</version>
+		  <version>${logstash.version}</version>
 		</dependency>
 
 		<!-- aop -->
@@ -145,25 +148,27 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-   
-<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-<dependency>
-    <groupId>javax.xml.bind</groupId>
-    <artifactId>jaxb-api</artifactId>
-</dependency>
 
-<!-- https://mvnrepository.com/artifact/javax.activation/activation -->
-<dependency>
-    <groupId>javax.activation</groupId>
-    <artifactId>activation</artifactId>
-    <version>1.1</version>
-</dependency>
-
-<!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
-<dependency>
-    <groupId>org.glassfish.jaxb</groupId>
-    <artifactId>jaxb-runtime</artifactId>
-</dependency>	
+		<!-- Para que funciona spring-ws -->
+		<!-- https://stackoverflow.com/questions/51916221/javax-xml-bind-jaxbexception-implementation-of-jaxb-api-has-not-been-found-on-mo -->   
+		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/javax.activation/activation -->
+		<dependency>
+		    <groupId>javax.activation</groupId>
+		    <artifactId>activation</artifactId>
+		    <version>1.1</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+		<dependency>
+		    <groupId>org.glassfish.jaxb</groupId>
+		    <artifactId>jaxb-runtime</artifactId>
+		</dependency>	
 
 		<!-- test -->
 

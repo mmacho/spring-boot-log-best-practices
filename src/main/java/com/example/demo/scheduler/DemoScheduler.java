@@ -2,7 +2,6 @@ package com.example.demo.scheduler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import com.example.demo.broker.Producer;
 import com.example.demo.broker.SampleMessage;
@@ -18,7 +17,8 @@ public class DemoScheduler {
 		this.producer = producer;
 	}
 
-	@Scheduled(fixedDelay = 10000)
+	// to test
+	// @Scheduled(fixedDelay = 10000)
 	public void run() {
 		log.info("DemoScheduler start");
 		for (int i = 1; i < 2; i++) {

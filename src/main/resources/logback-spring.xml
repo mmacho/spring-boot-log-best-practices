@@ -1,70 +1,58 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration>
 <configuration scan="true" scanPeriod="30 seconds" debug="false">
 
-    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
-    <springProperty scope="context" name="springAppVersion" source="info.app.version"/>
-    <contextName>${springAppName}</contextName>
-
-	<!-- para jsonConsole  -->
-    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
-    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
-
-    <!-- <springProperty scope="context" name="springAppName" source="spring.application.name"/> -->
-    <springProperty scope="context" name="username" source="security.auth.username"/>
-    <springProperty scope="context" name="loggingFormat" source="logging.format"/>
-    <property name="currentTimeStamp" value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX,UTC}"/>
-    
+ 	<springProperty scope="context" name="service" source="spring.application.name"/>
+    <springProperty scope="context" name="service_version" source="info.app.version"/>   
+    <contextName>${service}</contextName>
+           
 	<springProfile name="default">
 		<include resource="org/springframework/boot/logging/logback/base.xml" />
-		
+	   
 	    <root level="INFO">
 	        <appender-ref ref="CONSOLE"/>
 	    </root>
 	</springProfile>
 
-	<!-- logstash casi por defecto -->
-	<springProfile name="logstash">
+	<springProfile name="jconsole-default">	    
 
-	  <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
-	  </appender>
-	  
-	  <root level="INFO">
-		<appender-ref ref="jsonConsoleAppender"/>
-	  </root>
-		
-	</springProfile>
-
-	<!-- LoggingEventCompositeJsonEncoder provider xml -->
-	<springProfile name="loggingEventCompositeJsonEncoder">
-	
-	    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+	    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+   
+	    <appender name="logstash" class="ch.qos.logback.core.ConsoleAppender">
+	        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+	            <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator" />
+	        </encoder>
+	    </appender>
+  
+		<root level="INFO">
+    		<appender-ref ref="logstash"/>
+	  	</root>   
+	  		  	
+   	</springProfile>
+ 
+ 	<springProfile name="jconsole-custom">
+ 	
+	    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	      
+	    <appender name="logstash" class="ch.qos.logback.core.ConsoleAppender">
 	        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 	            <providers>
 	                <timestamp>
-	                    <fieldName>Timestamp/UTC</fieldName>
-	                    <!-- <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZZ</pattern> -->
+	                	<pattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</pattern>
 	                    <timeZone>UTC</timeZone>
 	                </timestamp>
-<!-- 	                <version>
-	                	<fieldName>Version</fieldName>
-	                </version> -->
-	                <logLevel>
-	                    <fieldName>Level</fieldName>
-	                </logLevel>
-	                <threadName>
-	                    <fieldName>Thread</fieldName>
-	                </threadName>
-	                <contextName>
-	                    <fieldName>ServiceName</fieldName>
-	                </contextName>
+	                <version/>     	                		                       
+	                <logLevel/>
+	                <context/>
+	                <!-- <contextName/>	 -->                
 	                <pattern>
 	                    <!-- the pattern that defines what to include -->
 	                    <pattern>
 	                        {
-	                        "ServiceVersion": "${springAppVersion}",
-	                        "ServiceHostName": "${hostname}",
-	                        "PID": "${PID:-}"
+		                        "username": "${username:-}",
+		                        "pid": "${PID:-}"
 	                        }
 	                    </pattern>
 	                </pattern>
@@ -72,150 +60,85 @@
 	                <arguments>
 	                    <includeNonStructuredArguments>true</includeNonStructuredArguments>
 	                </arguments>
-	                <loggerName>
-	                    <fieldName>Logger</fieldName>
-	                </loggerName>
+	                <threadName/>	                
+                    <loggerName>
+                        <shortenedLoggerNameLength>40</shortenedLoggerNameLength>
+                    </loggerName>
 	                <callerData>
-	                    <classFieldName>Class</classFieldName>
-	                    <methodFieldName>Method</methodFieldName>
-	                    <fileFieldName>File</fileFieldName>
-	                    <lineFieldName>Line</lineFieldName>
+	                    <classFieldName/>
+	                    <methodFieldName/>
+	                    <fileFieldName/>
+	                    <lineFieldName/>
 	                </callerData>
-	                <message>
-	                    <fieldName>Message</fieldName>
-	                </message>
-	                <throwableClassName>
-	                    <fieldName>ExceptionClass</fieldName>
-	                </throwableClassName>
+	                <message/>
+	                <throwableClassName/>
+	                <throwableRootCauseClassName/>              
 	                <stackTrace>
-	                    <fieldName>StackTrace</fieldName>
-	                    <!-- maxLength - limit the length of the stack trace -->
 	                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
-	                       <maxDepthPerThrowable>200</maxDepthPerThrowable>
+	                        <maxDepthPerThrowable>200</maxDepthPerThrowable>
 	                        <maxLength>5000</maxLength>
+	                        <shortenedClassNameLength>40</shortenedClassNameLength>
 	                        <rootCauseFirst>true</rootCauseFirst>
+	                        <inlineHash>true</inlineHash>
 	                    </throwableConverter>
 	                </stackTrace>
+					<stackHash/>	                
+	                <tags/>
+	                <logstashMarkers/>
+	                
+	                <!-- extra -->
+			        <nestedField>
+			            <fieldName>extra_fields</fieldName>
+			            <providers>
+			                <logLevel/>		                
+			            </providers>
+			        </nestedField>     
+	                <sequence>
+	                    <fieldName>sequenceNumberField</fieldName>
+	                </sequence>		                
 	            </providers>
 	        </encoder>
-	    </appender>	
-		<root level="INFO">
-			<appender-ref ref="console" />
-		</root>	     
-	</springProfile>	
+    	</appender>
+ 
+	    <root level="INFO">
+	        <appender-ref ref="logstash"/>
+	    </root>
+	       
+   	</springProfile>
 
-	<!-- LoggingEventCompositeJsonEncoder pattern custom -->
-	<springProfile name="loggingEventCompositeJsonEncoderv2">
-
-	    <appender name="jsonConsole"
-	              class="ch.qos.logback.core.ConsoleAppender">
+ 	<springProfile name="jconsole-pattern">	    
+ 	
+	    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	     	
+	    <appender name="logstash" class="ch.qos.logback.core.ConsoleAppender">
 	        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-	        	<jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
-	            <providers>
-	            	<!-- provides the timestamp -->
-			       <timestamp/>			
-			        <!-- provides the version -->
-			        <version/>	            
+	            <providers>                 
 	                <pattern>
-	                	<!-- La propiedad omitEmptyFields no me funcionaba con la version 5.3 -->
-						<omitEmptyFields>false</omitEmptyFields>
+	                	<omitEmptyFields>true</omitEmptyFields>
+	                    <!-- the pattern that defines what to include -->
 	                    <pattern>
 	                        {
-	                        "logTimeStamp": "${currentTimeStamp:-}",
-	                        "logLevel": "%level",
-	                        "traceId": "%X{traceId:-}",
-	                        "traceIdMDC": "%mdc{traceId}",
-	                        <!-- username lo pilla de un property no del usuario logueado -->
-	                        "principalId": "${username:-}",
-	                        "serviceName": "${springAppName:-}",
-	                        "message": "%message",
-	                        "messageJson": "#tryJson{%message}",
-	                        <!-- Execution-Time no funciona -->
-	                        "Execution-Time":"%mdc{Execution-Time}",                      
-	                        "spanId": "%X{spanId:-}",
-	                        <!-- parentSpanId no funciona -->
-	                        "parentSpanId": "%X{parentSpanId:-}",
-	                        "processId": "${PID:-}",
-	                        "threadName": "%thread",
+	                        "timestamp": "@timestamp",
+	                        "severity": "%level",
+	                        "service": "${service:-}",
+	                        "trace": "%X{traceId:-}",
+	                        "span": "%X{spanId:-}",
+	                        "pid": "${PID:-}",
+	                        "thread": "%thread",
 	                        "class": "%logger{40}",
-	                        "exception": "%wEx"
+	                        "rest": "%message"
 	                        }
 	                    </pattern>
 	                </pattern>
 	            </providers>
 	        </encoder>
-	    </appender>
-    
-	    <appender name="asyncConsole" class="ch.qos.logback.classic.AsyncAppender">
-	    	<appender-ref ref="jsonConsole" />
-	    </appender>
+    	</appender>
     	
 	    <root level="INFO">
-	        <appender-ref ref="asyncConsole" />
+	        <appender-ref ref="logstash"/>
 	    </root>
-	</springProfile>		
-	
-	<!-- LoggingEventCompositeJsonEncoder no veo las traceid, etc. aunque esta el mcd metido -->
-	<springProfile name="loggingEventCompositeJsonEncoderv3">
-
-	    <appender name="jsonConsole"
-	              class="ch.qos.logback.core.ConsoleAppender">
-	        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-	        	<jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
-	            <providers>
-			       <timestamp/>	
-   			       <mdc/> <!-- MDC variables on the Thread will be written as JSON fields--> 
-			       
-					<context/> <!--Outputs entries from logback's context -->    		
-			        <version/>	
-					<logLevel/>
-					<loggerName/>
-					<pattern>
-						<pattern> <!-- we can add some custom fields to be sent with all the log entries make filtering easier in Logstash   -->               
-							{
-							"appName": "upp-quality-control-framework-ws"	<!--or searching with Kibana-->
-							}
-						</pattern>
-					</pattern>
-	
-					<threadName/>
-					<message/>
-					
-					<logstashMarkers/> <!-- Useful so we can add extra information for specific log lines as Markers--> 
-					<arguments/> <!--or through StructuredArguments-->
-					
-					<stackTrace/>			                    
-	            </providers>
-	        </encoder>
-	    </appender>
-    
-	    <appender name="asyncConsole" class="ch.qos.logback.classic.AsyncAppender">
-	    	<appender-ref ref="jsonConsole" />
-	    </appender>
-    	
-	    <root level="INFO">
-	        <appender-ref ref="asyncConsole" />
-	    </root>
-	</springProfile>		
-	
-	<!--logback de siempre inyectando valores  -->
-	<springProfile name="logback">
-	    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-	        <layout class="ch.qos.logback.classic.PatternLayout">
-	            <Pattern>
-	                %cyan(%d{ISO8601}) %highlight(%-5level) [%blue(%-30t)] [%blue(%X{codePath})] [%blue(%X{rootCause})] [%X{traceId:-},%X{spanId:-},%X{username:-}] [%X{thirdPartyCallDuration}] %yellow(%C{1.}): %msg%n%throwable
-	            </Pattern>
-	        </layout>
-	    </appender>
-
-	    <appender name="asyncConsole" class="ch.qos.logback.classic.AsyncAppender">
-	    	<appender-ref ref="console" />
-	    </appender>
-    	
-	    <root level="INFO">
-	        <appender-ref ref="asyncConsole" />
-	    </root>
-		
-	</springProfile>
-
+	       
+   	</springProfile>
+   	   	   
 </configuration>
