@@ -2,8 +2,6 @@ package com.example.demo.websocket;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -11,6 +9,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.example.demo.service.ClientService;
 import com.example.demo.websocket.message.HelloRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,14 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ServerWebSocketIntegrationListener extends LogWebSocket {
 
+	private final ClientService clientService;
+
 	private final ObjectMapper objectMapper;
 
-	// sessions bl should go to service and repository
-	private Map<String, WebSocketSession> sessions;
-
-	public ServerWebSocketIntegrationListener(final ObjectMapper objectMapper) {
+	public ServerWebSocketIntegrationListener(final ObjectMapper objectMapper, final ClientService clientService) {
 		super(objectMapper);
-		this.sessions = new ConcurrentHashMap<>();
+		this.clientService = clientService;
 		this.objectMapper = objectMapper;
 	}
 
@@ -44,20 +42,20 @@ public class ServerWebSocketIntegrationListener extends LogWebSocket {
 
 	@Override
 	public void afterSessionStarted(WebSocketSession session) throws Exception {
-		sessions.put(session.getId(), session);
+		clientService.save(session);
 
 	}
 
 	@Override
 	public void afterSessionEnded(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-		sessions.remove(session.getId());
+		clientService.delete(session);
 
 	}
 
 	// to test
 	// @Scheduled(fixedDelay = 60000)
 	void sendPeriodicMessages() {
-		sessions.forEach((sessionId, session) -> {
+		clientService.getAll().forEach((sessionId, session) -> {
 			try {
 				sendMessage(session);
 			} catch (Exception e) {

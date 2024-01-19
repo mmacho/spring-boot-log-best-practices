@@ -17,13 +17,13 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
-		
+		<cxf.version>3.3.3</cxf.version>		
 		<okta-spring.version>2.1.0</okta-spring.version>
 		<logstash.version>6.3</logstash.version>
+		
 		<lombok.version>1.18.8</lombok.version>
-
+		
         <dockerfile-maven-plugin.version>1.4.10</dockerfile-maven-plugin.version>
-
         <docker.image.prefix>mmacho</docker.image.prefix>
         		
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -166,6 +166,24 @@
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
 
+<!-- cxf -->
+
+       <!-- <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-spring-boot-starter-jaxws</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-features-logging</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        
 		<!-- library/tooling -->				
 		<dependency>
 			<groupId>org.projectlombok</groupId>

@@ -14,15 +14,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		// disable
+		// http.authorizeRequests(requests ->
+		// requests.antMatchers("/**").permitAll().anyRequest().authenticated()).csrf(csrf
+		// -> csrf.disable());
 		http.authorizeRequests(request -> request.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-				.antMatchers("/ws/**").permitAll().antMatchers("/messages/**").permitAll().anyRequest().authenticated())
-				.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+				.antMatchers("/ws/**").permitAll().antMatchers("/soap/**").permitAll().antMatchers("/messages/**")
+				.permitAll().anyRequest().authenticated()).oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		// For SOAP
-		web.ignoring().antMatchers("/ws/**");
+		web.ignoring().antMatchers("/ws/**").antMatchers("/soap/**");
 	}
 
 }

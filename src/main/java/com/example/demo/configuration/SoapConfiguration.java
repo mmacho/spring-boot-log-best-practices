@@ -1,8 +1,18 @@
 package com.example.demo.configuration;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.ws.Endpoint;
+
+import org.apache.cxf.Bus;
+import org.apache.cxf.bus.spring.SpringBus;
+import org.apache.cxf.ext.logging.LoggingFeature;
+import org.apache.cxf.jaxws.EndpointImpl;
+import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
+import org.apache.cxf.transport.servlet.CXFServlet;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.boot.webservices.client.HttpWebServiceMessageSenderBuilder;
 import org.springframework.boot.webservices.client.WebServiceTemplateBuilder;
@@ -25,6 +35,7 @@ import com.example.demo.endpoint.CountryEndpoint;
 import com.example.demo.interceptor.soap.CustomEndpointInterceptor;
 import com.example.demo.interceptor.soap.GlobalEndpointInterceptor;
 import com.example.demo.interceptor.soap.SoapClientInterceptor;
+import com.example.demo.webservice.HelloWorldWS;
 
 @EnableWs
 @Configuration
@@ -96,6 +107,59 @@ public class SoapConfiguration extends WsConfigurerAdapter {
 					.build();
 		}
 
+	}
+
+	// cxf
+	@Configuration
+	@ComponentScan(basePackages = "com.example.demo.webservice")
+	// @ImportResource({ "classpath:META-INF/cxf/cxf.xml" })
+	public static class CxfSoapConfiguration {
+
+		@Bean
+		ServletRegistrationBean<CXFServlet> cxfServlet() {
+			CXFServlet cxfServlet = new CXFServlet();
+			ServletRegistrationBean<CXFServlet> servletDef = new ServletRegistrationBean<>(cxfServlet, "/soap/*");
+			servletDef.setLoadOnStartup(1);
+			return servletDef;
+		}
+
+		@Bean
+		LoggingFeature loggingFeature() {
+			LoggingFeature loggingFeature = new LoggingFeature();
+			loggingFeature.setPrettyLogging(Boolean.TRUE);
+			return loggingFeature;
+		}
+
+		@Bean(name = Bus.DEFAULT_BUS_ID)
+		SpringBus springBus(LoggingFeature loggingFeature) {
+			SpringBus springBus = new SpringBus();
+			springBus.setFeatures(Arrays.asList(loggingFeature));
+			return springBus;
+		}
+
+		@Bean
+		Endpoint helloWorldWebService(SpringBus springBus, @Qualifier("helloWorldWS") HelloWorldWS helloWorldWS) {
+			EndpointImpl endpoint = new EndpointImpl(springBus, helloWorldWS);
+			endpoint.setAddress("/helloWorldWS");
+			endpoint.publish();
+			return endpoint;
+		}
+
+	}
+
+	@Configuration
+	public static class ClientCxfSoapConfiguration {
+
+		private static final String ADDRESS = "http://localhost:8081/soap/helloWorldWS";
+
+		@Bean(name = "helloWorldRequesterBean")
+		HelloWorldWS helloWorldWS(LoggingFeature loggingFeature) {
+			JaxWsProxyFactoryBean jaxWsProxyFactory = new JaxWsProxyFactoryBean();
+			jaxWsProxyFactory.setServiceClass(HelloWorldWS.class);
+			jaxWsProxyFactory.setAddress(ADDRESS);
+			jaxWsProxyFactory.getFeatures().add(loggingFeature);
+			return (HelloWorldWS) jaxWsProxyFactory.create();
+		}
 	}
 
 }
