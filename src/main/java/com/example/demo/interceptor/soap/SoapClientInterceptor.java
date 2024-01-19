@@ -16,6 +16,7 @@ import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
 import org.springframework.ws.soap.saaj.SaajSoapMessage;
 
+// test
 public class SoapClientInterceptor implements ClientInterceptor {
 
 	private static final Logger logger = LoggerFactory.getLogger(SoapClientInterceptor.class);

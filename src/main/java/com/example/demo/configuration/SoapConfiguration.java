@@ -16,7 +16,6 @@ import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.server.EndpointInterceptor;
-import org.springframework.ws.soap.server.endpoint.interceptor.PayloadRootSmartSoapEndpointInterceptor;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
@@ -48,8 +47,9 @@ public class SoapConfiguration extends WsConfigurerAdapter {
 		interceptors.add(globalEndpointInterceptor);
 
 		// register endpoint specific interceptor
-		interceptors.add(new PayloadRootSmartSoapEndpointInterceptor(customEndpointInterceptor,
-				CountryEndpoint.NAMESPACE, CountryEndpoint.COUNTRY_REQUEST_LOCAL_PART));
+		// interceptors.add(new
+		// PayloadRootSmartSoapEndpointInterceptor(customEndpointInterceptor,
+		// CountryEndpoint.NAMESPACE, CountryEndpoint.COUNTRY_REQUEST_LOCAL_PART));
 	}
 
 	@Bean
@@ -89,8 +89,9 @@ public class SoapConfiguration extends WsConfigurerAdapter {
 
 		@Bean
 		WebServiceTemplate webServiceTemplate(WebServiceTemplateBuilder builder) {
+			SoapClientInterceptor interceptors = new SoapClientInterceptor();
 			return builder.setDefaultUri(DEFAULT_URI).setMarshaller(marshaller()).setUnmarshaller(marshaller())
-					.interceptors(new SoapClientInterceptor()).messageSenders(new HttpWebServiceMessageSenderBuilder()
+					.interceptors(interceptors).messageSenders(new HttpWebServiceMessageSenderBuilder()
 							.setConnectTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(10)).build())
 					.build();
 		}

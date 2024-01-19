@@ -9,6 +9,7 @@
     <contextName>${service}</contextName>
            
 	<springProfile name="default">
+    	<!-- Use some logging configuration predefined by spring boot. For example: formatting pattern of logs. -->	
     	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
 	
         <property name="CONSOLE_LOG_PATTERN"

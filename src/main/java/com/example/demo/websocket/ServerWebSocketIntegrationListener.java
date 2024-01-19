@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.integration.websocket.WebSocketListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -19,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class ServerWebSocketIntegrationListener implements WebSocketListener {
+public class ServerWebSocketIntegrationListener extends LogWebSocket {
 
 	private final ObjectMapper objectMapper;
 
@@ -27,9 +26,9 @@ public class ServerWebSocketIntegrationListener implements WebSocketListener {
 	private Map<String, WebSocketSession> sessions;
 
 	public ServerWebSocketIntegrationListener(final ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
+		super(objectMapper);
 		this.sessions = new ConcurrentHashMap<>();
-
+		this.objectMapper = objectMapper;
 	}
 
 	@Override
@@ -40,20 +39,17 @@ public class ServerWebSocketIntegrationListener implements WebSocketListener {
 
 	@Override
 	public void onMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-		String receivedMessage = (String) message.getPayload();
-		log.info("Handling message: {} from sessionId {}", receivedMessage, session.getId());
+		message.getPayload();
 	}
 
 	@Override
 	public void afterSessionStarted(WebSocketSession session) throws Exception {
-		log.info("Server connection opened with sessionId {}", session.getId());
 		sessions.put(session.getId(), session);
 
 	}
 
 	@Override
 	public void afterSessionEnded(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-		log.info("Server connection with sessionId {} closed because of: {}", session.getId(), closeStatus.getReason());
 		sessions.remove(session.getId());
 
 	}
