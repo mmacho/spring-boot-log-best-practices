@@ -37,6 +37,11 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.interceptor.rest.RequestResponseLoggingInterceptor;
 import com.example.demo.interceptor.rest.RestTemplateHeaderModifierInterceptor;
 
+/**
+ * Revisar
+ * https://medium.com/@cizek.jy/spring-resttemplate-why-the-set-timeout-does-not-work-b75aaee076a3
+ * https://tech.asimio.net/2016/12/27/Troubleshooting-Spring-RestTemplate-Requests-Timeout.html
+ */
 @Configuration
 @ComponentScan(basePackages = { "com.example.demo.repository" })
 @EnableCaching

@@ -20,18 +20,29 @@
 		
 		<okta-spring.version>2.1.0</okta-spring.version>
 		<logstash.version>6.3</logstash.version>
-		
+		<lombok.version>1.18.8</lombok.version>
+
+        <dockerfile-maven-plugin.version>1.4.10</dockerfile-maven-plugin.version>
+
+        <docker.image.prefix>mmacho</docker.image.prefix>
+        		
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>			
 		<timestamp>${maven.build.timestamp}</timestamp>
-		<maven.build.timestamp.format>yyyy-MM-dd-HH:mm</maven.build.timestamp.format>				
+		<maven.build.timestamp.format>yyyy-MM-dd-HH:mm</maven.build.timestamp.format>			
 	</properties>
 	<dependencies>
+		<!-- Spring Cloud -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
+		</dependency>
 		<!-- Boot's Web support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>      		
+		</dependency>
+		<!-- Security Okta-->    		
 		<dependency>
 			<groupId>com.okta.spring</groupId>
 			<artifactId>okta-spring-boot-starter</artifactId>
@@ -47,6 +58,7 @@
 			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
 		</dependency>
 
+		<!-- Log-->
 		<dependency>
 		   <groupId>ch.qos.logback</groupId>
 		   <artifactId>logback-access</artifactId>
@@ -58,19 +70,19 @@
 		  <artifactId>logstash-logback-encoder</artifactId>
 		  <version>${logstash.version}</version>
 		</dependency>
-
+		<!-- Log-->
+		
 		<!-- aop -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        
+
 		<!-- restemplate -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
         </dependency>
-        
 
 		<!-- entity example-->
         <dependency>
@@ -81,9 +93,15 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
-        </dependency>  
- 		<!-- entity example-->
- 		       
+        </dependency>   
+		<!-- entity example-->
+
+		<!-- validation -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>     
+		
 		<!-- observability -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -101,14 +119,37 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
-		</dependency>	
+		</dependency>
 		<!-- tag::springws[] -->
 		<dependency>
 			<groupId>wsdl4j</groupId>
 			<artifactId>wsdl4j</artifactId>
 		</dependency>
 		<!-- end::springws[] -->
-     
+		
+		<!-- Para que funciona spring-ws -->
+		<!-- https://stackoverflow.com/questions/51916221/javax-xml-bind-jaxbexception-implementation-of-jaxb-api-has-not-been-found-on-mo -->
+		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+		<dependency>
+		    <groupId>javax.xml.bind</groupId>
+		    <artifactId>jaxb-api</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.activation/activation -->
+		<dependency>
+		    <groupId>javax.activation</groupId>
+		    <artifactId>activation</artifactId>
+		    <version>1.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+		<dependency>
+		    <groupId>org.glassfish.jaxb</groupId>
+		    <artifactId>jaxb-runtime</artifactId>
+		</dependency>		
+		<!-- soap -->
+		
+		<!-- ws -->		     
 		<dependency>
 		    <groupId>org.springframework.integration</groupId>
 		    <artifactId>spring-integration-websocket</artifactId>
@@ -117,13 +158,15 @@
 		  <groupId>org.springframework.boot</groupId>            
 		  <artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
-				
+		<!-- ws -->		
+		
 		<!-- kafka -->
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
 		</dependency>
-				
+
+		<!-- library/tooling -->				
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -143,47 +186,17 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- validation -->
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-
-		<!-- Para que funciona spring-ws -->
-		<!-- https://stackoverflow.com/questions/51916221/javax-xml-bind-jaxbexception-implementation-of-jaxb-api-has-not-been-found-on-mo -->   
-		<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-		<dependency>
-		    <groupId>javax.xml.bind</groupId>
-		    <artifactId>jaxb-api</artifactId>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/javax.activation/activation -->
-		<dependency>
-		    <groupId>javax.activation</groupId>
-		    <artifactId>activation</artifactId>
-		    <version>1.1</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
-		<dependency>
-		    <groupId>org.glassfish.jaxb</groupId>
-		    <artifactId>jaxb-runtime</artifactId>
-		</dependency>	
-
 		<!-- test -->
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		
+		</dependency>		
 	</dependencies>
 
 	<dependencyManagement>
@@ -215,11 +228,94 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <release>${java.version}</release>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>				
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+				<executions>
+					<execution>
+						<id>unit-tests</id>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<skipTests>false</skipTests>
+							<includes>
+								<include>**/*Test.java</include>
+							</includes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>integration-tests</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<skipTests>false</skipTests>
+							<includes>
+								<include>**/*IT.*</include>
+								<include>**/*Tests.*</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>				
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			<!--	
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile-maven-plugin.version}</version>
+                <configuration>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>	
+             -->
 			<!-- tag::xsd[] -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -237,11 +333,11 @@
 			        <sources>
 			            <source>${project.basedir}/src/main/resources/countries.xsd</source>
 			        </sources>
-                    <!-- Java class output directory 
+					<!-- Java class output directory 
                     <outputDirectory>${project.basedir}/src/main/java</outputDirectory> -->
-                    <!-- Package name for generated classes 
+					<!-- Package name for generated classes 
                     <packageName>com.agnasarp.courses</packageName> -->
-                    <!-- Package clean -> false -->
+					<!-- Package clean -> false -->
                     <clearOutputDir>false</clearOutputDir>
 			    </configuration>			    		
 			</plugin>

@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
-public class DemoService {
+public interface DemoService {
+	String execute(String authToken);
 
+	String getWelcomeMessage();
 }
