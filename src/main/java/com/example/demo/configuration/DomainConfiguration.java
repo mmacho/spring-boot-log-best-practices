@@ -9,7 +9,7 @@ import com.example.demo.configuration.domain.SchedulerConfig;
 
 @Configuration
 @ComponentScan(basePackages = { "com.example.demo.service", "com.example.demo.scheduler", "com.example.demo.client" })
-@Import({ SchedulerConfig.class, AsyncConfiguration.class })
+@Import({ SchedulerConfig.class, AsyncConfiguration.class, QuartzConfiguration.class })
 // , AopConfiguration.class
 public class DomainConfiguration {
 
