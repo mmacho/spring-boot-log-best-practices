@@ -7,8 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class Consumer {
 
 	private static final String $_CLOUDKARAFKA_TOPIC = "${cloudkarafka.topic}";

@@ -2,11 +2,12 @@ package com.example.demo.scheduler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.example.demo.broker.Producer;
 import com.example.demo.broker.SampleMessage;
 
-//@Component
+@Component
 public class DemoScheduler {
 
 	private static final Logger log = LoggerFactory.getLogger(DemoScheduler.class);
@@ -18,10 +19,10 @@ public class DemoScheduler {
 	}
 
 	// to test
-	// @Scheduled(fixedDelay = 10000)
+	// @Scheduled(fixedDelay = 120000)
 	public void run() {
 		log.info("DemoScheduler start");
-		for (int i = 1; i < 2; i++) {
+		for (int i = 0; i < 1; i++) {
 			producer.send(new SampleMessage(i, "A simple test message"));
 		}
 		log.info("DemoScheduler finished");

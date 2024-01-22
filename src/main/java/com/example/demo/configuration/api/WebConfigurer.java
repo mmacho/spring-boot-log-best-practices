@@ -14,6 +14,5 @@ public class WebConfigurer implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new CodePathInterceptor());
 		registry.addInterceptor(new UserInterceptor());
-
 	}
 }

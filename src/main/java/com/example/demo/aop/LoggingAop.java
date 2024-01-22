@@ -1,13 +1,15 @@
-package com.example.demo.service;
+package com.example.demo.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-//@Component
-//@Aspect
+@Component
+@Aspect
 @Slf4j
 public class LoggingAop {
 

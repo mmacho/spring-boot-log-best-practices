@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.aop;
 
 import java.util.Arrays;
 
@@ -6,14 +6,16 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
-//@Component
-//@Aspect
+@Component
+@Aspect
 @Slf4j
 public class LoggingAspect {
 

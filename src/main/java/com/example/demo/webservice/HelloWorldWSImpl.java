@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HelloWorldWSImpl implements HelloWorldWS {
 
 	public HelloWorldWSImpl() {
+		// comment
 	}
 
 	@Override

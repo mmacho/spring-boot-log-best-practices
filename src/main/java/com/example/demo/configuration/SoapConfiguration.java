@@ -34,7 +34,6 @@ import org.springframework.xml.xsd.XsdSchema;
 import com.example.demo.endpoint.CountryEndpoint;
 import com.example.demo.interceptor.soap.CustomEndpointInterceptor;
 import com.example.demo.interceptor.soap.GlobalEndpointInterceptor;
-import com.example.demo.interceptor.soap.SoapClientInterceptor;
 import com.example.demo.webservice.HelloWorldWS;
 
 @EnableWs
@@ -100,10 +99,10 @@ public class SoapConfiguration extends WsConfigurerAdapter {
 
 		@Bean
 		WebServiceTemplate webServiceTemplate(WebServiceTemplateBuilder builder) {
-			SoapClientInterceptor interceptors = new SoapClientInterceptor();
+			// SoapClientInterceptor interceptors = new SoapClientInterceptor();
 			return builder.setDefaultUri(DEFAULT_URI).setMarshaller(marshaller()).setUnmarshaller(marshaller())
-					.interceptors(interceptors).messageSenders(new HttpWebServiceMessageSenderBuilder()
-							.setConnectTimeout(Duration.ofSeconds(1)).setReadTimeout(Duration.ofSeconds(10)).build())
+					.messageSenders(new HttpWebServiceMessageSenderBuilder().setConnectTimeout(Duration.ofSeconds(1))
+							.setReadTimeout(Duration.ofSeconds(10)).build())
 					.build();
 		}
 
@@ -157,7 +156,7 @@ public class SoapConfiguration extends WsConfigurerAdapter {
 			JaxWsProxyFactoryBean jaxWsProxyFactory = new JaxWsProxyFactoryBean();
 			jaxWsProxyFactory.setServiceClass(HelloWorldWS.class);
 			jaxWsProxyFactory.setAddress(ADDRESS);
-			jaxWsProxyFactory.getFeatures().add(loggingFeature);
+			// jaxWsProxyFactory.getFeatures().add(loggingFeature);
 			return (HelloWorldWS) jaxWsProxyFactory.create();
 		}
 	}

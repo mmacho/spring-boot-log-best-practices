@@ -21,7 +21,13 @@ public class TraceConfiguration {
 			if (currentSpan != null) {
 				HttpServletResponse resp = (HttpServletResponse) response;
 				// putting trace id value in [mytraceid] response header
-				resp.addHeader("mytraceid", currentSpan.context().traceId());
+				// https://docs.use.id/docs/logging-request-ids-and-correlation-ids
+				// X-Request-ID: A UUDv4 unique to that HTTP request and response combination.
+				// --> spanId local
+				resp.addHeader("X-Request-ID", currentSpan.context().spanId());
+				// X-Correlation-ID: A UUIDv4 unique over a series of requests and responses,
+				// identifying a transaction. --> traceId
+				resp.addHeader("X-Correlation-ID", currentSpan.context().traceId());
 			}
 			chain.doFilter(request, response);
 		};

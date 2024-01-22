@@ -1,4 +1,4 @@
-package com.example.demo.configuration;
+package com.example.demo.configuration.domain;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
@@ -28,32 +28,33 @@ public class QuartzConfiguration {
 		return scheduler;
 	}
 
-	@Bean(name = "QuartzJob")
+	@Bean(name = "quartzJob")
 	JobDetail quartzJob() {
-		return JobBuilder.newJob(MyJob.class).withIdentity("QuartzJob", "QuartzJobs").storeDurably().build();
+		return JobBuilder.newJob(MyJob.class).withIdentity("QuartzJob", "quartzJobs").storeDurably().build();
 	}
 
 	@Bean
-	Trigger quartzTrigger(@Qualifier("QuartzJob") JobDetail job) {
-		return TriggerBuilder.newTrigger().forJob(job).withIdentity("QuartzTrigger", "QuartzJobs")
+	Trigger quartzTrigger(@Qualifier("quartzJob") JobDetail job) {
+		return TriggerBuilder.newTrigger().forJob(job).withIdentity("quartzTrigger", "quartzJobs")
 				.withDescription("Quartz trigger")
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatForever().withIntervalInSeconds(10)).build();
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatForever().withIntervalInSeconds(120))
+				.build();
 	}
 
-	@Bean
-	Trigger cronQuartzTrigger(@Qualifier("QuartzJob") JobDetail job) {
-		return TriggerBuilder.newTrigger().forJob(job).withIdentity("CronQuartzTrigger", "QuartzJobs")
+	// @Bean
+	Trigger cronQuartzTrigger(@Qualifier("quartzJob") JobDetail job) {
+		return TriggerBuilder.newTrigger().forJob(job).withIdentity("cronQuartzTrigger", "quartzJobs")
 				.withDescription("Cron Quartz trigger").withSchedule(CronScheduleBuilder.cronSchedule("0 * * * * ?"))
 				.build();
 	}
 
-	@Bean(name = "QuartzJobListener")
+	@Bean(name = "quartzJobListener")
 	JobListener quartzListener() {
 		return new QuartzJobListener();
 	}
 
 	@Bean
-	SchedulerFactoryBeanCustomizer schedulerConfiguration(@Qualifier("QuartzJobListener") JobListener listener) {
+	SchedulerFactoryBeanCustomizer schedulerConfiguration(@Qualifier("quartzJobListener") JobListener listener) {
 		return bean -> {
 			bean.setGlobalJobListeners(listener);
 		};
