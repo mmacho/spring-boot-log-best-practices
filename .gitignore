@@ -61,3 +61,5 @@ nb-configuration.xml
 ## OS X
 ##########################
 .DS_Store
+temp/data/testdb.trace.db
+temp/data/testdb.mv.db
