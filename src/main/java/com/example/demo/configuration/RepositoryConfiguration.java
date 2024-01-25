@@ -21,12 +21,15 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.ssl.TrustStrategy;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.web.client.ClientHttpRequestFactorySupplier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -43,9 +46,7 @@ import com.example.demo.interceptor.rest.RestTemplateHeaderModifierInterceptor;
  * https://tech.asimio.net/2016/12/27/Troubleshooting-Spring-RestTemplate-Requests-Timeout.html
  */
 @Configuration
-@ComponentScan(basePackages = { "com.example.demo.repository" })
-@EnableCaching
-@EnableTransactionManagement
+@EnableFeignClients
 public class RepositoryConfiguration {
 
 	@Value("${app.timeout:5000}")
@@ -109,4 +110,14 @@ public class RepositoryConfiguration {
 	}
 
 	// Da problemas al pasar por el interceptor
+
+	@Configuration
+	@EnableCaching
+	@EnableJpaRepositories(basePackages = "com.example.demo.repository")
+	@ComponentScan(basePackages = { "com.example.demo.repository" })
+	@EntityScan("com.example.demo.domain")
+	@EnableTransactionManagement
+	public static class DataBaseConfiguration {
+
+	}
 }

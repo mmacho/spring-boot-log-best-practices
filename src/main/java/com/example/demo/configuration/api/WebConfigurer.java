@@ -12,7 +12,8 @@ public class WebConfigurer implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new CodePathInterceptor());
-		registry.addInterceptor(new UserInterceptor());
+		String[] patterns = new String[] { "/a", "/b", "/api/v1/customer/**" };
+		registry.addInterceptor(new CodePathInterceptor()).addPathPatterns(patterns);
+		registry.addInterceptor(new UserInterceptor()).addPathPatterns(patterns);
 	}
 }
