@@ -16,6 +16,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<spring-boot.version>2.5.1</spring-boot.version>
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
 		<cxf.version>3.3.3</cxf.version>		
 		<okta-spring.version>2.1.0</okta-spring.version>
@@ -336,7 +337,12 @@
 			                <groupId>org.hibernate</groupId>
 			                <artifactId>hibernate-jpamodelgen</artifactId>
 			                <version>5.4.32.Final</version>
-			            </path>						                
+			            </path>			
+                       <path>
+                           <groupId>org.springframework.boot</groupId>
+                           <artifactId>spring-boot-configuration-processor</artifactId>
+                           <version>${spring-boot.version}</version>
+                       </path>									                
                     </annotationProcessorPaths>                
                 </configuration>				
 			</plugin>
@@ -438,57 +444,6 @@
                 </executions>
             </plugin>	
              -->
-			<!-- tag::xsd[] -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>2.5.0</version>
-				<executions>
-					<execution>
-						<id>xjc</id>
-						 <phase>generate-sources</phase>
-						<goals>
-							<goal>xjc</goal>
-						</goals>
-					</execution>
-				</executions>
-			    <configuration>
-			        <sources>
-			            <source>${project.basedir}/src/main/resources/countries.xsd</source>
-			        </sources>
-					<!-- Java class output directory 
-                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory> -->
-					<!-- Package name for generated classes 
-                    <packageName>com.agnasarp.courses</packageName> -->
-					<!-- Package clean -> false -->
-                    <clearOutputDir>false</clearOutputDir>
-			    </configuration>
-				<dependencies>
-					<!-- Workaround to fix xjc - Pendiente revisar estas versiones -->
-					<!-- https://stackoverflow.com/questions/54869262/xjc-maven-pluginjaxb2-maven-plugin-java-11-migration-issues -->
-					<dependency>
-						<groupId>com.sun.activation</groupId>
-						<artifactId>javax.activation</artifactId>
-						<version>1.2.0</version>
-					</dependency>
-					<dependency>
-						<groupId>org.glassfish.jaxb</groupId>
-						<artifactId>jaxb-runtime</artifactId>
-						<version>2.3.3</version>
-					</dependency>
-					<dependency>
-						<groupId>org.glassfish.jaxb</groupId>
-						<artifactId>jaxb-core</artifactId>
-						<version>2.3.0.1</version>
-					</dependency>
-					<dependency>
-						<groupId>org.glassfish.jaxb</groupId>
-						<artifactId>jaxb-xjc</artifactId>
-						<version>2.3.3</version>
-					</dependency>
-				</dependencies>			    	    		
-			</plugin>
-			<!-- end::xsd[] -->	
 			<plugin>
 			    <groupId>org.codehaus.mojo</groupId>
 			    <artifactId>build-helper-maven-plugin</artifactId>
@@ -502,6 +457,7 @@
 			            <configuration>
 			                <sources>
 			                    <source>target/generated-sources/annotations/</source>
+								<source>target/generated-sources/jaxb/</source>
 			                </sources>		                
 			            </configuration>
 			        </execution>			        
@@ -510,4 +466,64 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>ws</id>
+			<build>
+				<plugins>
+				<!-- tag::xsd[] -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>jaxb2-maven-plugin</artifactId>
+					<version>2.5.0</version>
+					<executions>
+						<execution>
+							<id>xjc</id>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>xjc</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<sources>
+							<source>${project.basedir}/src/main/resources/countries.xsd</source>
+						</sources>
+						<!-- Java class output directory 
+						<outputDirectory>${project.basedir}/src/main/java</outputDirectory> -->
+						<!-- Package name for generated classes 
+						<packageName>com.agnasarp.courses</packageName> -->
+						<!-- Package clean -> false -->
+						<clearOutputDir>false</clearOutputDir>
+					</configuration>
+					<dependencies>
+						<!-- Workaround to fix xjc - Pendiente revisar estas versiones -->
+						<!-- https://stackoverflow.com/questions/54869262/xjc-maven-pluginjaxb2-maven-plugin-java-11-migration-issues -->
+						<dependency>
+							<groupId>com.sun.activation</groupId>
+							<artifactId>javax.activation</artifactId>
+							<version>1.2.0</version>
+						</dependency>
+						<dependency>
+							<groupId>org.glassfish.jaxb</groupId>
+							<artifactId>jaxb-runtime</artifactId>
+							<version>2.3.3</version>
+						</dependency>
+						<dependency>
+							<groupId>org.glassfish.jaxb</groupId>
+							<artifactId>jaxb-core</artifactId>
+							<version>2.3.0.1</version>
+						</dependency>
+						<dependency>
+							<groupId>org.glassfish.jaxb</groupId>
+							<artifactId>jaxb-xjc</artifactId>
+							<version>2.3.3</version>
+						</dependency>
+					</dependencies>			    	    		
+				</plugin>
+				<!-- end::xsd[] -->	
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

@@ -9,6 +9,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.extern.slf4j.Slf4j;
 
+// https://funcionaenmimaquina.com/guia-minima-de-resilience4j-y-circuit-breaker-en-spring-boot/
 @Service
 @Slf4j
 public class CustomerIntegrationService {
