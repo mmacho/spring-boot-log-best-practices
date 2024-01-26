@@ -46,7 +46,7 @@ import com.example.demo.interceptor.rest.RestTemplateHeaderModifierInterceptor;
  * https://tech.asimio.net/2016/12/27/Troubleshooting-Spring-RestTemplate-Requests-Timeout.html
  */
 @Configuration
-@EnableFeignClients
+@EnableFeignClients(basePackages = { "com.example.demo.client" })
 public class RepositoryConfiguration {
 
 	@Value("${app.timeout:5000}")
