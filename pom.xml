@@ -23,7 +23,9 @@
 		<logstash.version>6.3</logstash.version>
 		<springdoc-openapi-ui.version>1.6.14</springdoc-openapi-ui.version>
 		<mapstruct.version>1.5.3.Final</mapstruct.version>
-		
+		<rsql-jpa.version>5.1.1</rsql-jpa.version>
+		<rsql-querydsl.version>5.1.1</rsql-querydsl.version>
+
 		<lombok.version>1.18.8</lombok.version>
 		
         <dockerfile-maven-plugin.version>1.4.10</dockerfile-maven-plugin.version>
@@ -242,6 +244,19 @@
             <artifactId>cxf-rt-features-logging</artifactId>
             <version>${cxf.version}</version>
         </dependency>
+
+		<!-- RSQL / FIQL -->
+		<dependency>
+			<groupId>io.github.perplexhub</groupId>
+			<artifactId>rsql-jpa-spring-boot-starter</artifactId>
+			<version>${rsql-jpa.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.perplexhub</groupId>
+			<artifactId>rsql-querydsl-spring-boot-starter</artifactId>
+			<version>${rsql-querydsl.version}</version>
+		</dependency>
 
 		<!-- library/tooling -->				
 		<dependency>

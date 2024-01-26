@@ -49,11 +49,22 @@ public class CustomerController extends BaseController {
 
 	@GetMapping(value = SEARCH)
 	@Timed
-	public ResponseEntity<Page<CustomerResponse>> searchBy(@RequestParam(name = "page", defaultValue = "1") Integer page,
-			@RequestParam(name = "size", defaultValue = "10") Integer size,
+	public ResponseEntity<Page<CustomerResponse>> searchBy(@RequestParam(name = "page", defaultValue = "0") Integer page,
+			@RequestParam(name = "size", defaultValue = "25") Integer size,
 			@RequestParam(required = false, name = "sortField", defaultValue = "id") String sortField,
 			@RequestParam(required = false, name = "direction", defaultValue = "DESC") String direction) {
 		final Page<Customer> entities = service.search(page, size, sortField, direction);
+		return entities.isEmpty() ? ResponseEntity.noContent().build()
+				: ResponseEntity.ok().body(CustomerMapper.INSTANCE.toPageResponse(entities));
+	}
+
+	@GetMapping(value = MACHING)
+	@Timed
+	public ResponseEntity<Page<CustomerResponse>> matching(@RequestParam(name = "page", defaultValue = "0") Integer page,
+			@RequestParam(name = "size", defaultValue = "25") Integer size,
+			@RequestParam(required = false, name = "filter") String filter,
+			@RequestParam(required = false, name = "sort", defaultValue = "id,desc") String sort) {
+		final Page<Customer> entities = service.matching(page, size, filter, sort);
 		return entities.isEmpty() ? ResponseEntity.noContent().build()
 				: ResponseEntity.ok().body(CustomerMapper.INSTANCE.toPageResponse(entities));
 	}

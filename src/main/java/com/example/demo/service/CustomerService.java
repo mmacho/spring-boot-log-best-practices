@@ -8,12 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.BaseEntity_;
 import com.example.demo.domain.Customer;
 import com.example.demo.repository.CustomerRepository;
+
+import io.github.perplexhub.rsql.RSQLJPASupport;
 import lombok.NonNull;
 
 @Service
@@ -26,12 +29,19 @@ public class CustomerService {
 		this.repository = repository;
 	}
 
+	// https://docs.oracle.com/javase/tutorial/java/generics/methods.html
+	public Page<Customer> matching(Integer page, Integer size, String filter, String sort) {
+		Specification<Customer> specification = RSQLJPASupport.<Customer>toSpecification(filter, Boolean.TRUE).and(RSQLJPASupport.<Customer>toSort(sort));
+		Pageable pageable = PageRequest.of(page, size);
+		return repository.findAll(specification, pageable);
+	}
+
 	public Page<Customer> search(int page, int size, String sortField, @NonNull String direction) {
 		Sort sort = Sort.by(Sort.Direction.fromString(direction), sortField);
 		Pageable pageable = PageRequest.of(page, size, sort);
 		return repository.findAll(pageable);
 	}
-
+		
 	public List<Customer> getAll() {
 		return repository.findAll();
 	}
@@ -80,4 +90,6 @@ public class CustomerService {
 	private String getMessage(final Long id) {
 		return MessageFormat.format("Customer not found for this id {0}", id);
 	}
+
+
 }
