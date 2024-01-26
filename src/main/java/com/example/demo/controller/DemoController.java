@@ -24,7 +24,7 @@ public class DemoController {
 		this.demoService = demoService;
 	}
 
-	@Value("${APP_NAME}")
+	@Value("${spring.application.name}")
 	private String appName;
 
 	@GetMapping("/")
