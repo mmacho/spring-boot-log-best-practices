@@ -4,15 +4,19 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import com.example.demo.controller.BaseResponse;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
-@Getter
-@Setter
+//@JsonFilter(BaseResponse.FIELDS_FILTER)
+@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, exclude = {})
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerResponse extends BaseResponse {

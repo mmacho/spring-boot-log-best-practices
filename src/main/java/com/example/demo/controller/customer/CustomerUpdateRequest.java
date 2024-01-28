@@ -15,6 +15,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CustomerUpdateRequest extends CustomerCreateRequest {
 
+	private static final long serialVersionUID = -2535882365604844348L;
+	
 	@JsonProperty(required = true)
 	@NotEmpty
 	private Long version;

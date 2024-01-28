@@ -3,6 +3,13 @@ package com.example.demo.domain;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
 @Entity
 @Table(name = "customer")
 public class Customer extends BaseEntity {
@@ -23,30 +30,6 @@ public class Customer extends BaseEntity {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.emailId = emailId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
 

@@ -3,18 +3,21 @@ package com.example.demo.controller.customer;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
+import com.example.demo.controller.BaseRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerCreateRequest {
+@EqualsAndHashCode(callSuper = false)
+public class CustomerCreateRequest extends BaseRequest {
+
+	private static final long serialVersionUID = 8135554194506753620L;
 
 	@JsonProperty(required = true)
 	@NotEmpty

@@ -23,7 +23,7 @@ public abstract class BaseEntity implements Serializable {
 
 	@Id
 	@Column(name = ID_C_NAME, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	protected Long id;
 
 	@Version
