@@ -21,7 +21,7 @@ import com.example.demo.controller.ResponseMapper;
 import com.example.demo.controller.support.Request;
 import com.example.demo.controller.support.Responses;
 import com.example.demo.domain.BaseEntity;
-import com.example.demo.service.GenericCommandService;
+import com.example.demo.service.v2.GenericCommandService;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.AllArgsConstructor;

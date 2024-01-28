@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.v2;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -10,12 +10,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.domain.BaseEntity;
 import com.example.demo.domain.BaseEntity_;
 import com.example.demo.repository.GenericRepository;
+import com.example.demo.service.ResourceNotFoundException;
+import com.example.demo.service.StaleStateIdentifiedException;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 @AllArgsConstructor
-public class GenericCommandService<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericCommandService<T extends BaseEntity, ID extends Serializable> {
 
     private final GenericRepository<T, ID> repository;
 
@@ -26,7 +28,7 @@ public class GenericCommandService<T extends BaseEntity, ID extends Serializable
 
     @Transactional
     public T update(@NonNull final ID id, @NonNull T domain) throws ResourceNotFoundException {
-		T entity = findbyId(id);
+		final T entity = findbyId(id);
         BeanUtils.copyProperties(domain, entity, BaseEntity_.ID, BaseEntity_.CREATED_AT, BaseEntity_.MODIFIED_AT);
         try {
             return this.repository.save(entity);

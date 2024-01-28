@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.v2;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.BaseEntity;
 import com.example.demo.repository.GenericRepository;
+import com.example.demo.service.ResourceNotFoundException;
 
 import io.github.perplexhub.rsql.RSQLJPASupport;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public class GenericQueryService<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericQueryService<T extends BaseEntity, ID extends Serializable> {
 
     private final GenericRepository<T, ID> repository;
 

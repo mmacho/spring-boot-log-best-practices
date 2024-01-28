@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Customer;
 import com.example.demo.repository.CustomerRepository;
-import com.example.demo.service.GenericCommandService;
 
 @Service
 public class CustomerCommandService extends GenericCommandService<Customer, Long>{
