@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.exception;
 
 public class StaleStateIdentifiedException extends RuntimeException {
     

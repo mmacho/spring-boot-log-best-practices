@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.support.v1;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 
+import com.example.demo.controller.BaseResponse;
+import com.example.demo.controller.Response;
+import com.example.demo.controller.ResponseMapper;
 import com.example.demo.controller.customer.BaseController;
 import com.example.demo.controller.support.Responses;
 import com.example.demo.domain.BaseEntity;

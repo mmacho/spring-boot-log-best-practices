@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.controller.customer.CustomerCreateRequest;
 import com.example.demo.controller.customer.CustomerResponse;
 import com.example.demo.controller.customer.CustomerUpdateRequest;
-import com.example.demo.controller.customer.GenericCommandController;
 import com.example.demo.controller.customer.v5.mapper.CustomerCreateRequestMapper;
 import com.example.demo.controller.customer.v5.mapper.CustomerReponseMapper;
 import com.example.demo.controller.customer.v5.mapper.CustomerUpdateRequestMapper;
+import com.example.demo.controller.support.v1.GenericCommandController;
 import com.example.demo.domain.Customer;
 import com.example.demo.service.v2.CustomerCommandService;
 

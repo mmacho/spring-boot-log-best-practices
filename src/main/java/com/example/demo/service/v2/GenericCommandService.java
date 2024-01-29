@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.domain.BaseEntity;
 import com.example.demo.domain.BaseEntity_;
 import com.example.demo.repository.GenericRepository;
-import com.example.demo.service.ResourceNotFoundException;
-import com.example.demo.service.StaleStateIdentifiedException;
+import com.example.demo.service.exception.ResourceNotFoundException;
+import com.example.demo.service.exception.StaleStateIdentifiedException;
 
 import lombok.AllArgsConstructor;
 import lombok.NonNull;

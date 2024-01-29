@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.support.v1;
 
 import java.io.Serializable;
 import java.text.MessageFormat;
@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.domain.BaseEntity;
 import com.example.demo.domain.BaseEntity_;
 import com.example.demo.repository.GenericRepository;
+import com.example.demo.service.exception.ResourceNotFoundException;
+import com.example.demo.service.exception.StaleStateIdentifiedException;
 
 import io.github.perplexhub.rsql.RSQLJPASupport;
 import lombok.AllArgsConstructor;
@@ -28,14 +30,14 @@ public abstract class GenericService<T extends BaseEntity, ID extends Serializab
 
     private final GenericRepository<T, ID> repository;
 
-    public Page<T> matching(Integer page, Integer size, String filter, String sort) {
+    public Page<T> search(Integer page, Integer size, String filter, String sort) {
 		final Specification<T> specification = RSQLJPASupport.<T>toSpecification(filter, Boolean.TRUE)
 				.and(RSQLJPASupport.<T>toSort(sort));
 		final Pageable pageable = PageRequest.of(page, size);
 		return this.repository.findAll(specification, pageable);
     }
 
-    public List<T> getAll() {
+    public List<T> findAll() {
 		return this.repository.findAll();
     }
 

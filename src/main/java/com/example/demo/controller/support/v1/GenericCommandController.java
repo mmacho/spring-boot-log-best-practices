@@ -1,4 +1,4 @@
-package com.example.demo.controller.customer;
+package com.example.demo.controller.support.v1;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.demo.controller.RequestMapper;
 import com.example.demo.controller.Response;
 import com.example.demo.controller.ResponseMapper;
+import com.example.demo.controller.customer.BaseController;
 import com.example.demo.controller.support.Request;
 import com.example.demo.controller.support.Responses;
 import com.example.demo.domain.BaseEntity;
