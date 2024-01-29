@@ -15,8 +15,9 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public class GenericFinderV2<T extends BaseEntity, ID extends Serializable, R extends Response> {
+public class GenericFinderV2<T extends BaseEntity<ID>, ID extends Serializable, R extends Response> {
 
+    @NonNull
     private final GenericRepository<T, ID> repository;
 
     public R findbyId(@NonNull final ID id) throws ResourceNotFoundException {

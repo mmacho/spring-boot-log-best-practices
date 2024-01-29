@@ -12,8 +12,9 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 @Transactional
-public abstract class GenericCreator<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericCreator<T extends BaseEntity<ID>, ID extends Serializable> {
 
+    @NonNull
     private final GenericRepository<T, ID> repository;
 
     public T create(@NonNull T domain) {

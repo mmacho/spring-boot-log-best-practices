@@ -9,11 +9,13 @@ import com.example.demo.domain.BaseEntity;
 import com.example.demo.repository.GenericRepository;
 
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public class AllGenericSearcher<T extends BaseEntity, ID extends Serializable> {
+public class AllGenericSearcher<T extends BaseEntity<ID>, ID extends Serializable> {
 
+    @NonNull
     private final GenericRepository<T, ID> repository;
 
     public List<T> search() {

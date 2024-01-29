@@ -17,8 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 @AllArgsConstructor
-public abstract class GenericCommandService<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericCommandService<T extends BaseEntity<ID>, ID extends Serializable> {
 
+    @NonNull
     private final GenericRepository<T, ID> repository;
 
     @Transactional

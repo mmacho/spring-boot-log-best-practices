@@ -26,18 +26,20 @@ import com.example.demo.service.v2.GenericCommandService;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @AllArgsConstructor
 @Validated
-public class GenericCommandController<T extends BaseEntity, ID extends Serializable, CREQ extends Request, UREQ extends Request,RES extends Responses>
+public class GenericCommandController<T extends BaseEntity<ID>, ID extends Serializable, CREQ extends Request, UREQ extends Request,RES extends Responses>
         extends BaseController {
 
+    @NonNull
     private final GenericCommandService<T, ID> service;
-
+    @NonNull
     private final RequestMapper<CREQ, T> reqCreateMapper;
-
+    @NonNull
     private final RequestMapper<UREQ, T> reqUpdateMapper;
-
+    @NonNull
     private final ResponseMapper<RES, T> resMapper;
 
     @PostMapping

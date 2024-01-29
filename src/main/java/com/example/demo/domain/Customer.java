@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +13,9 @@ import lombok.Setter;
 @Builder
 @Entity
 @Table(name = "customer")
-public class Customer extends BaseEntity {
+public class Customer extends BaseEntity<Long> {
 
+	@Transient
 	private static final long serialVersionUID = -2392530719997944346L;
 
 	private String firstName;

@@ -26,8 +26,9 @@ import lombok.NonNull;
 @Service
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public abstract class GenericService<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericService<T extends BaseEntity<ID>, ID extends Serializable> {
 
+	@NonNull
     private final GenericRepository<T, ID> repository;
 
     public Page<T> search(Integer page, Integer size, String filter, String sort) {

@@ -20,7 +20,7 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public abstract class GenericQueryService<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericQueryService<T extends BaseEntity<ID>, ID extends Serializable> {
 
     private final GenericRepository<T, ID> repository;
 

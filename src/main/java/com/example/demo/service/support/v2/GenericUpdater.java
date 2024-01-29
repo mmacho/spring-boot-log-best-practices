@@ -18,7 +18,7 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 @Transactional
-public abstract class GenericUpdater<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericUpdater<T extends BaseEntity<ID>, ID extends Serializable> {
 
     private final GenericRepository<T, ID> repository;
 

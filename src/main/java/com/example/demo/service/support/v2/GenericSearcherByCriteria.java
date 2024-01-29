@@ -13,11 +13,13 @@ import com.example.demo.repository.GenericRepository;
 
 import io.github.perplexhub.rsql.RSQLJPASupport;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @AllArgsConstructor
 @Transactional(readOnly = true)
-public abstract class GenericSearcherByCriteria<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericSearcherByCriteria<T extends BaseEntity<ID>, ID extends Serializable> {
 
+    @NonNull
     private final GenericRepository<T, ID> repository;
 
     public Page<T> search(Integer page, Integer size, String filter, String sort) {

@@ -8,14 +8,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@MappedSuperclass
-public abstract class BaseEntity implements Serializable {
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@MappedSuperclass
+public abstract class BaseEntity<ID extends Serializable> implements Serializable {
+
+	@Transient
 	private static final long serialVersionUID = -7281713842303095398L;
 
 	public static final String ID_C_NAME = "ID";
@@ -24,7 +31,7 @@ public abstract class BaseEntity implements Serializable {
 	@Id
 	@Column(name = ID_C_NAME, nullable = false)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	protected Long id;
+	protected ID id;
 
 	@Version
 	@Column(name = VERSION_C_NAME, nullable = false)
@@ -38,36 +45,6 @@ public abstract class BaseEntity implements Serializable {
 	@Column(name = "modified_at")
 	protected Instant modifiedAt;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Instant getModifiedAt() {
-		return modifiedAt;
-	}
-
-	public void setModifiedAt(Instant modifiedAt) {
-		this.modifiedAt = modifiedAt;
-	}
-
-	public Long getVersion() {
-		return version;
-	}
-
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+	
 
 }

@@ -14,8 +14,9 @@ import lombok.NonNull;
 
 @AllArgsConstructor
 @Transactional
-public abstract class GenericDeleter<T extends BaseEntity, ID extends Serializable> {
+public abstract class GenericDeleter<T extends BaseEntity<ID>, ID extends Serializable> {
 
+    @NonNull
     private final GenericRepository<T, ID> repository;
 
     public void delete(@NonNull final ID id) throws ResourceNotFoundException {

@@ -9,6 +9,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 import com.example.demo.domain.BaseEntity;
 
 @NoRepositoryBean
-public interface GenericRepository<T extends BaseEntity, ID extends Serializable > extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
+public interface GenericRepository<T extends BaseEntity<ID>, ID extends Serializable> extends JpaRepository<T, ID>, JpaSpecificationExecutor<T> {
 
 }

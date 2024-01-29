@@ -25,14 +25,15 @@ import com.example.demo.service.v2.GenericQueryService;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 @AllArgsConstructor
 @Validated
-public class GenericQueryController<T extends BaseEntity, ID extends Serializable, R extends Responses>
+public class GenericQueryController<T extends BaseEntity<ID>, ID extends Serializable, R extends Responses>
                 extends BaseController {
-
+        @NonNull
         private final GenericQueryService<T, ID> service;
-
+        @NonNull
         private final ResponseMapper<R, T> mapper;
 
         @GetMapping

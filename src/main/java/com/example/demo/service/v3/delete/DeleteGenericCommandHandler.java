@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
 @AllArgsConstructor
-public abstract class DeleteGenericCommandHandler<T extends BaseEntity, ID extends Serializable, R extends Response>
+public abstract class DeleteGenericCommandHandler<T extends BaseEntity<ID>, ID extends Serializable, R extends Response>
         implements CommandHandler<DeleteGenericCommand<ID>, R> {
 
     private final GenericDeleter<T, ID> deleter;
