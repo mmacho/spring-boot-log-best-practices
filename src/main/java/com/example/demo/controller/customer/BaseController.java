@@ -24,7 +24,7 @@ public abstract class BaseController {
 
 	public static final String DEFAULT_VALUE_SIZE = "25";
 
-	public static final String DEFAULT_VALUE_PAGE = "0";
+	public static final String DEFAULT_VALUE_PAGE = "1";
 
 	public static final String SORT = "sort";
 
