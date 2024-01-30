@@ -28,9 +28,13 @@ import io.micrometer.core.annotation.Timed;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
+/*
+ * 
+ * code smell multilples mapper
+ */
 @AllArgsConstructor
 @Validated
-public class GenericCommandController<T extends BaseEntity<ID>, ID extends Serializable, CREQ extends Request, UREQ extends Request,RES extends Responses>
+public class GenericCommandController<T extends BaseEntity<ID>, ID extends Serializable, CREQ extends Request, UREQ extends Request, RES extends Responses>
         extends BaseController {
 
     @NonNull

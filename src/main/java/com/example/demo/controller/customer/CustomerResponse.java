@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-//@JsonFilter(BaseResponse.FIELDS_FILTER)
+@JsonFilter(BaseResponse.FIELDS_FILTER)
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true, exclude = {})

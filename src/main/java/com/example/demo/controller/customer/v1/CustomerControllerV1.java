@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.example.demo.controller.BaseResponse;
 import com.example.demo.controller.Response;
 import com.example.demo.controller.customer.BaseController;
 import com.example.demo.controller.customer.CustomerCreateRequest;
@@ -85,7 +86,7 @@ public class CustomerControllerV1 extends BaseController {
 	@Timed
 	public ResponseEntity<Response<MappingJacksonValue>> findById2(@PathVariable final Long id, @RequestParam(required = false, value = "fields") String... fields) {
 		Response<CustomerResponse> response = CustomerMapper.INSTANCE.toGenericResponse(service.findbyId(id));
-		return ResponseEntity.ok().body(filterResponse(response, CustomerResponse.FIELDS_FILTER, fields));
+		return ResponseEntity.ok().body(filterResponse(response, BaseResponse.FIELDS_FILTER, fields));
 	}
 
 	@PostMapping

@@ -43,7 +43,6 @@ import lombok.NonNull;
 @Validated
 public class CustomerControllerV4 extends BaseController {
 
-
     @NonNull
     private final CustomerService service;
 

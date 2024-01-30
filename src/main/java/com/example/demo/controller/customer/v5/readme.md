@@ -1,0 +1,1 @@
+primera versión con genericos y segregagado en query/command

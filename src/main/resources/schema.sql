@@ -1,5 +1,8 @@
 DROP TABLE IF EXISTS customer;
 
+-- Hibernate
+CREATE SEQUENCE HIBERNATE_SEQUENCE START WITH 4 INCREMENT BY 1;
+
 -- Crear la tabla customer
 CREATE TABLE customer
 (
@@ -11,3 +14,5 @@ CREATE TABLE customer
   last_name   VARCHAR(255) NOT NULL,
   email_id   VARCHAR(255) NOT NULL
 );
+
+

@@ -1,4 +1,4 @@
-package com.example.demo.controller.support.v1;
+package com.example.demo.controller.support.v2;
 
 import java.io.Serializable;
 import java.time.Duration;
@@ -27,15 +27,11 @@ import io.micrometer.core.annotation.Timed;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 
-/*
- * Query tiene que quedar con MappingJacksonValue
- * Command con el response que le toque
- * Con las notaciones de api arreglar el MappingJacksonValue
- */
 @AllArgsConstructor
 @Validated
-public class GenericQueryController<T extends BaseEntity<ID>, ID extends Serializable, R extends Responses>
+public class GenericQueryControllerV2<T extends BaseEntity<ID>, ID extends Serializable, R extends Responses>
                 extends BaseController {
+
         @NonNull
         private final GenericQueryService<T, ID> service;
         @NonNull
@@ -43,22 +39,30 @@ public class GenericQueryController<T extends BaseEntity<ID>, ID extends Seriali
 
         @GetMapping
         @Timed
-        public ResponseEntity<Response<List<R>>> findAll() {
+        public ResponseEntity<MappingJacksonValue> findAll(
+                        @RequestParam(required = false, value = FIELDS) String... fields) {
                 final List<T> entities = service.getAll();
+                final Response<List<R>> responses = mapper.toGenericResponse(entities);
+                final MappingJacksonValue filterResponse = filter(responses, BaseResponse.FIELDS_FILTER,
+                                fields);
                 return entities.isEmpty() ? ResponseEntity.noContent().build()
-                                : ResponseEntity.ok().body(mapper.toGenericResponse(entities));
+                                : ResponseEntity.ok().body(filterResponse);
         }
 
         @GetMapping(value = MACHING)
         @Timed
-        public ResponseEntity<Response<Page<R>>> matching(
+        public ResponseEntity<MappingJacksonValue> matching(
                         @RequestParam(name = PAGE, defaultValue = DEFAULT_VALUE_PAGE) Integer page,
                         @RequestParam(name = SIZE, defaultValue = DEFAULT_VALUE_SIZE) Integer size,
                         @RequestParam(required = false, name = FILTER) String filter,
-                        @RequestParam(required = false, name = SORT, defaultValue = DEFAULT_VALUE_SORT) String sort) {
+                        @RequestParam(required = false, name = SORT, defaultValue = DEFAULT_VALUE_SORT) String sort,
+                        @RequestParam(required = false, value = FIELDS) String... fields) {
                 final Page<T> entities = service.matching(page, size, filter, sort);
+                final Response<Page<R>> responses = Response.success(mapper.toResponse(entities));
+                final MappingJacksonValue filterResponse = filter(responses, BaseResponse.FIELDS_FILTER,
+                                fields);
                 return entities.isEmpty() ? ResponseEntity.noContent().build()
-                                : ResponseEntity.ok().body(mapper.toGenericResponse(entities));
+                                : ResponseEntity.ok().body(filterResponse);
         }
 
         @GetMapping(value = ID)
@@ -66,8 +70,8 @@ public class GenericQueryController<T extends BaseEntity<ID>, ID extends Seriali
         public ResponseEntity<MappingJacksonValue> findById(@PathVariable final ID id, WebRequest request,
                         @RequestParam(required = false, value = FIELDS) String... fields) {
                 final T entity = service.findbyId(id);
-                final String etag = String.valueOf(entity.getVersion());
-                if (request.checkNotModified(etag)) {
+                final String eTag = String.valueOf(entity.getVersion());
+                if (request.checkNotModified(eTag)) {
                         return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
                                         .cacheControl(CacheControl.maxAge(Duration.ofDays(1)))
                                         .build();
@@ -75,7 +79,7 @@ public class GenericQueryController<T extends BaseEntity<ID>, ID extends Seriali
                 final Response<R> response = Response.success(mapper.toResponse(entity));
                 final MappingJacksonValue filterResponse = filter(response, BaseResponse.FIELDS_FILTER,
                                 fields);
-                return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofDays(1))).eTag(etag)
+                return ResponseEntity.ok().cacheControl(CacheControl.maxAge(Duration.ofDays(1))).eTag(eTag)
                                 .body(filterResponse);
         }
 

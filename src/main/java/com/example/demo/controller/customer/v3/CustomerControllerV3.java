@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.example.demo.controller.BaseResponse;
 import com.example.demo.controller.Response;
 import com.example.demo.controller.customer.BaseController;
 import com.example.demo.controller.customer.CustomerCreateRequest;
@@ -87,7 +88,7 @@ public class CustomerControllerV3 extends BaseController {
             @RequestParam(required = false, value = "fields") String... fields) {
         final Customer entity = service.findbyId(id);
         final CustomerResponse response = customerMapper.toResponse(entity);
-        final MappingJacksonValue filterResponse = filter(response, CustomerResponse.FIELDS_FILTER,
+        final MappingJacksonValue filterResponse = filter(response, BaseResponse.FIELDS_FILTER,
                 fields);
         final CustomerResponse response2 = (CustomerResponse) filterResponse.getValue();
         return ResponseEntity.ok().body(Response.success(response2));

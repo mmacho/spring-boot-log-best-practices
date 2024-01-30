@@ -74,7 +74,7 @@ public abstract class BaseController {
 	}
 
 	/**
-	 * el bueno
+	 * el bueno y podría ir al mapping
 	 * 
 	 * @param responseToFilter
 	 * @param filterName
@@ -82,10 +82,12 @@ public abstract class BaseController {
 	 * @return
 	 */
 	protected <T> MappingJacksonValue filter(T t, String filterName, String... fields) {
-		SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept(fields);
-		FilterProvider filters = new SimpleFilterProvider().addFilter(filterName, filter);
 		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(t);
-		mappingJacksonValue.setFilters(filters);
+		if (null != fields && fields.length > 0) {
+			SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept(fields);
+			FilterProvider filters = new SimpleFilterProvider().addFilter(filterName, filter);
+			mappingJacksonValue.setFilters(filters);
+		}
 		return mappingJacksonValue;
 	}
 }

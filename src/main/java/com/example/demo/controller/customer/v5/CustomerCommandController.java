@@ -13,6 +13,9 @@ import com.example.demo.controller.support.v1.GenericCommandController;
 import com.example.demo.domain.Customer;
 import com.example.demo.service.v2.CustomerCommandService;
 
+/*
+ * code smell con varios objetos request
+ */
 @RestController
 @RequestMapping(value = "/v5/customer")
 public class CustomerCommandController extends GenericCommandController<Customer, Long, CustomerCreateRequest, CustomerUpdateRequest, CustomerResponse> {

@@ -1,6 +1,5 @@
 package com.example.demo.configuration;
 
-import java.time.Duration;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -8,13 +7,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.example.demo.configuration.api.SecurityConfiguration;
 import com.example.demo.configuration.api.TraceConfiguration;
 import com.example.demo.configuration.api.WebConfigurer;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -49,24 +52,30 @@ public class ApiConfiguration {
 		return new OperatingSystemInformationHandler(applicationName, buildVersion, buildTimestamp, profile);
 	}
 
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration cc = new CorsConfiguration();
-		cc.setAllowedHeaders(Arrays.asList("Origin,Accept", "X-Requested-With", "Content-Type",
-				"Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization"));
-		cc.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-		cc.setAllowedOrigins(Arrays.asList("/*"));
-		cc.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "PUT", "PATCH"));
-		cc.addAllowedOrigin("*");
-		cc.setMaxAge(Duration.ZERO);
-		cc.setAllowCredentials(Boolean.TRUE);
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", cc);
-		return source;
+	@Configuration
+	public static class WebConfiguration {
+
+		@Bean
+		ObjectMapper objectMapper() {
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.registerModule(new JavaTimeModule());
+
+			SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAll();
+			SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+			filterProvider.setDefaultFilter(filter);
+			filterProvider.setFailOnUnknownId(Boolean.FALSE);
+			objectMapper.setFilterProvider(filterProvider);
+
+			objectMapper.setDefaultPropertyInclusion(Include.NON_NULL);
+			objectMapper.configure(SerializationFeature.INDENT_OUTPUT, Boolean.TRUE);
+			objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, Boolean.FALSE);
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, Boolean.FALSE);
+			return objectMapper;
+		}
 	}
 
 	@Configuration
-	public class OpenApiConfiguration {
+	public static class OpenApiConfiguration {
 
 		@Bean
 		OpenAPI customOpenAPI() {

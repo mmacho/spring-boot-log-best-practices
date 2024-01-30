@@ -1,0 +1,1 @@
+command y query generic service

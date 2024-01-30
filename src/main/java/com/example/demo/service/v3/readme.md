@@ -1,0 +1,1 @@
+segregado por caso de uso
