@@ -24,7 +24,18 @@ public abstract class GenericCommandService<T extends BaseEntity<ID>, ID extends
 
     @Transactional
     public T create(@NonNull T domain) {
-        return this.repository.save(domain);
+        return this.repository.persist(domain);
+    }
+
+    @Transactional
+    public T update2(@NonNull final ID id, @NonNull T domain) throws ResourceNotFoundException {
+        try {
+            return this.repository.update(domain);
+            //TODO: add more exceptions
+        } catch (OptimisticLockingFailureException e) {
+            throw StaleStateIdentifiedException
+                    .forAggregateWith(MessageFormat.format("Confict to update entity with id {0}", id));
+        }
     }
 
     @Transactional
@@ -32,7 +43,7 @@ public abstract class GenericCommandService<T extends BaseEntity<ID>, ID extends
 		final T entity = findbyId(id);
         BeanUtils.copyProperties(domain, entity, BaseEntity_.ID, BaseEntity_.CREATED_AT, BaseEntity_.MODIFIED_AT);
         try {
-            return this.repository.save(entity);
+            return this.repository.persist(entity);
             //TODO: add more exceptions
         } catch (OptimisticLockingFailureException e) {
             throw StaleStateIdentifiedException

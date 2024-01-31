@@ -2,6 +2,7 @@ package com.example.demo.configuration;
 
 import java.util.Arrays;
 
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,6 +12,8 @@ import org.springframework.context.annotation.Import;
 import com.example.demo.configuration.api.SecurityConfiguration;
 import com.example.demo.configuration.api.TraceConfiguration;
 import com.example.demo.configuration.api.WebConfigurer;
+import com.example.demo.controller.customer.v1.CustomerControllerV1;
+import com.example.demo.controller.customer.v2.CustomerControllerV2;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,6 +94,24 @@ public class ApiConfiguration {
 							.termsOfService("terms")
 							.contact(new Contact().email("m2m@gmail.com").name("Developer: Manuel Macho"))
 							.license(new License().name("GNU")).version("1.0"));
+		}
+
+		//https://blog.jdriven.com/2022/10/springdoc-openapi-definitions/
+
+		@Bean
+		GroupedOpenApi apiV1() {
+			return GroupedOpenApi.builder()
+					.group("v1")
+					.packagesToScan(CustomerControllerV1.class.getPackageName())
+					.build();
+		}
+
+		@Bean
+		GroupedOpenApi apiV2() {
+			return GroupedOpenApi.builder()
+					.group("v2")
+					.packagesToScan(CustomerControllerV2.class.getPackageName())
+					.build();
 		}
 
 	}

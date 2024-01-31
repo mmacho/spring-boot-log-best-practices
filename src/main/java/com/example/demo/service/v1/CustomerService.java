@@ -46,7 +46,8 @@ public class CustomerService {
 	}
 
 	public List<Customer> getAll() {
-		return repository.findAll();
+		final Pageable pageable = PageRequest.of(0, 25);
+		return repository.findAll(pageable).getContent();
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class CustomerService {
 
 	@Transactional
 	public Customer create(@NonNull Customer customer) {
-		return repository.save(customer);
+		return repository.persist(customer);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class CustomerService {
 		Customer entity = findbyId(id);
 		BeanUtils.copyProperties(customer, entity, BaseEntity_.ID, BaseEntity_.CREATED_AT, BaseEntity_.MODIFIED_AT);
 		try {
-			return repository.save(entity);
+			return repository.persist(entity);
 		} catch (OptimisticLockingFailureException e) {
 			throw StaleStateIdentifiedException
 					.forAggregateWith(MessageFormat.format("Confict to update entity with id {0}", id));

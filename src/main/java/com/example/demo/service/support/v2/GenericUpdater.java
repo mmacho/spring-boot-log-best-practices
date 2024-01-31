@@ -27,7 +27,7 @@ public abstract class GenericUpdater<T extends BaseEntity<ID>, ID extends Serial
                 .forAggregateWith(MessageFormat.format("Entity not found for this id {0}", id)));
         BeanUtils.copyProperties(domain, entity, BaseEntity_.ID, BaseEntity_.CREATED_AT, BaseEntity_.MODIFIED_AT);
         try {
-            return this.repository.save(entity);
+            return this.repository.persist(entity);
             // TODO: add more exceptions
         } catch (OptimisticLockingFailureException e) {
             throw StaleStateIdentifiedException

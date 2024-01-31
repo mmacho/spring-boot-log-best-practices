@@ -32,7 +32,8 @@ public abstract class GenericQueryService<T extends BaseEntity<ID>, ID extends S
     }
 
     public List<T> getAll() {
-        return this.repository.findAll();
+        final Pageable pageable = PageRequest.of(0, 25);
+        return this.repository.findAll(pageable).getContent();
     }
 
     public T findbyId(@NonNull final ID id) throws ResourceNotFoundException {
