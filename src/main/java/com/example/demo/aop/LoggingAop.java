@@ -16,7 +16,6 @@ public class LoggingAop {
 	@Pointcut("within(com.example.demo.repository..*)" + " || within(com.example.demo.service..*)"
 			+ " || within(com.example.demo.controller..*)")
 	public void logAllMethodsStartAndEnd() {
-
 	}
 
 	@Around("logAllMethodsStartAndEnd()")
