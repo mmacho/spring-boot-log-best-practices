@@ -5,8 +5,8 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.validation.annotation.Validated;
@@ -49,7 +49,9 @@ public class GenericCommandControllerV2<T extends BaseEntity<ID>, ID extends Ser
         @NonNull
         private final ResponseMapper<RES, T> resMapper;
 
-        @PostMapping
+        @PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE,
+                        MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
+                                        MediaType.APPLICATION_XML_VALUE })
         @Timed
         public ResponseEntity<MappingJacksonValue> create(@Valid @RequestBody final CREQ request) {
                 final T entity = service.create(reqCreateMapper.toDomain(request));
@@ -58,14 +60,15 @@ public class GenericCommandControllerV2<T extends BaseEntity<ID>, ID extends Ser
                                 .buildAndExpand(entity.getId())
                                 .toUri();
                 final Response<RES> response = resMapper.toGenericResponse(entity);
-                final MappingJacksonValue filterResponse = filter(response, BaseResponse.FIELDS_FILTER,
-                                StringUtils.EMPTY);
+                final MappingJacksonValue filterResponse = filter(response, BaseResponse.FIELDS_FILTER);
                 return ResponseEntity.status(HttpStatus.CREATED).location(location)
                                 .body(filterResponse);
 
         }
 
-        @PutMapping(value = ID)
+        @PutMapping(value = ID, produces = { MediaType.APPLICATION_JSON_VALUE,
+                        MediaType.APPLICATION_XML_VALUE }, consumes = { MediaType.APPLICATION_JSON_VALUE,
+                                        MediaType.APPLICATION_XML_VALUE })
         @Timed
         public ResponseEntity<MappingJacksonValue> update(@PathVariable final ID id,
                         @Valid @RequestBody final UREQ request) {
@@ -75,8 +78,7 @@ public class GenericCommandControllerV2<T extends BaseEntity<ID>, ID extends Ser
                                 .buildAndExpand(entity.getId())
                                 .toUri();
                 final Response<RES> response = resMapper.toGenericResponse(entity);
-                final MappingJacksonValue filterResponse = filter(response, BaseResponse.FIELDS_FILTER,
-                                StringUtils.EMPTY);
+                final MappingJacksonValue filterResponse = filter(response, BaseResponse.FIELDS_FILTER);
                 return ResponseEntity.status(HttpStatus.OK).location(location).body(filterResponse);
         }
 

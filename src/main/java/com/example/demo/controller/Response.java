@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Builder
@@ -11,8 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Response<T> {
 
-    private boolean succeeded ;
-    
+    private boolean succeeded;
+
+    @NonNull
     private T data;
 
     public static <T> Response<T> empty() {
@@ -32,5 +34,6 @@ public class Response<T> {
         .succeeded(Boolean.FALSE)
         .build();
     }
-    
+
+ 
 }

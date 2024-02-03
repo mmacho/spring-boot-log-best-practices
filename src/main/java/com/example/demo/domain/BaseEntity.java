@@ -42,9 +42,7 @@ public abstract class BaseEntity<ID extends Serializable> implements Serializabl
 	protected Instant createdAt;
 
 	@UpdateTimestamp
-	@Column(name = "modified_at")
+	@Column(name = "modified_at", nullable = false)
 	protected Instant modifiedAt;
-
-	
 
 }

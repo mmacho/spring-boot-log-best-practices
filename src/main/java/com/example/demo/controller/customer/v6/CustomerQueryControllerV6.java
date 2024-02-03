@@ -2,7 +2,9 @@ package com.example.demo.controller.customer.v6;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
@@ -23,20 +25,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  * va mal los parametros del override pq no respeta los opcionales
  */
 @RestController
-@RequestMapping(value = "/v6/customer")
+@RequestMapping(value = "/api/v6/customer")
 @Tag(name = "Customer v6", description = "The Customer API")
 public class CustomerQueryControllerV6 extends GenericQueryControllerV2<Customer, Long, CustomerResponseFilter> {
 
     public CustomerQueryControllerV6(final CustomerQueryService service, final CustomerReponseFilterMapper mapper) {
         super(service, mapper);
-    }
-
-    @Override
-    @Operation(summary = "Get All Customer")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = CustomerResponseFilter.class))) })
-    public ResponseEntity<MappingJacksonValue> findAll(String... fields) {
-        return super.findAll(fields);
     }
 
     @Operation(summary = "Get By Id Customer")
@@ -45,16 +39,30 @@ public class CustomerQueryControllerV6 extends GenericQueryControllerV2<Customer
             @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = @Content),
             @ApiResponse(responseCode = "404", description = "Customer not found", content = @Content) })
     @Override
-    public ResponseEntity<MappingJacksonValue> findById(Long id, WebRequest request, String... fields) {
+    public ResponseEntity<MappingJacksonValue> findById(@PathVariable final Long id, WebRequest request,
+            @RequestParam(required = false, value = FIELDS) String... fields) {
         return super.findById(id, request, fields);
+    }
+
+    @Override
+    @Operation(summary = "Get All Customer")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = CustomerResponseFilter.class))) })
+    public ResponseEntity<MappingJacksonValue> findAll(
+            @RequestParam(required = false, value = FIELDS) final String... fields) {
+        return super.findAll(fields);
     }
 
     @Override
     @Operation(summary = "Search Customer")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = CustomerResponseFilter.class))) })
-    public ResponseEntity<MappingJacksonValue> matching(Integer page, Integer size, String filter, String sort,
-            String... fields) {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = CustomerResponseFilter.class))) })
+    public ResponseEntity<MappingJacksonValue> matching(
+            @RequestParam(name = PAGE, defaultValue = DEFAULT_VALUE_PAGE) Integer page,
+            @RequestParam(name = SIZE, defaultValue = DEFAULT_VALUE_SIZE) Integer size,
+            @RequestParam(required = false, name = FILTER) String filter,
+            @RequestParam(required = false, name = SORT, defaultValue = DEFAULT_VALUE_SORT) final String sort,
+            @RequestParam(required = false, value = FIELDS) final String... fields) {
         return super.matching(page, size, filter, sort, fields);
     }
 

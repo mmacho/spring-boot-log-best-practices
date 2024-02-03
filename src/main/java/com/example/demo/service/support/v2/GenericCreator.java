@@ -18,6 +18,6 @@ public abstract class GenericCreator<T extends BaseEntity<ID>, ID extends Serial
     private final GenericRepository<T, ID> repository;
 
     public T create(@NonNull T domain) {
-        return this.repository.persist(domain);
+        return this.repository.save(domain);
     }
 }

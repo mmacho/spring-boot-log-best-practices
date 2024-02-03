@@ -26,8 +26,8 @@
 		<rsql-jpa.version>5.1.1</rsql-jpa.version>
 		<rsql-querydsl.version>5.1.1</rsql-querydsl.version>
 
-		<!--https://vladmihalcea.com/basejparepository-hypersistence-utils/-->
-		<hypersistence-utils.version>3.1.0</hypersistence-utils.version>
+		<!--https://vladmihalcea.com/basejparepository-hypersistence-utils/
+		<hypersistence-utils.version>3.1.0</hypersistence-utils.version> -->
 		<lombok.version>1.18.8</lombok.version>
 		
         <dockerfile-maven-plugin.version>1.4.10</dockerfile-maven-plugin.version>
@@ -265,11 +265,12 @@
 			<version>${rsql-querydsl.version}</version>
 		</dependency>
 
+		<!-- 
 		<dependency>
 			<groupId>io.hypersistence</groupId>
 			<artifactId>hypersistence-utils-hibernate-52</artifactId>
 			<version>${hypersistence-utils.version}</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- library/tooling -->				
 		<dependency>

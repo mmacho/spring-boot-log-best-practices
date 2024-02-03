@@ -1,6 +1,6 @@
 package com.example.demo.controller.customer;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,7 +18,7 @@ public class CustomerUpdateRequest extends CustomerCreateRequest {
 	private static final long serialVersionUID = -2535882365604844348L;
 	
 	@JsonProperty(required = true)
-	@NotEmpty
+	@NotNull
 	private Long version;
 
 }

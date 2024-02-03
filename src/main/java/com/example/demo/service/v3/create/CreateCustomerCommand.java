@@ -2,18 +2,18 @@ package com.example.demo.service.v3.create;
 
 import com.example.demo.service.support.Command;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class CreateCustomerCommand implements Command {
 
-    private final String firstName;
+    private String firstName;
 
-    private final String lastName;
+    private String lastName;
 
-    private final String emailId;
+    private String emailId;
 }

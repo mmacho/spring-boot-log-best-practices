@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.BaseEntity;
@@ -23,8 +21,7 @@ public class AllGenericSearcherV2<T extends BaseEntity<ID>, ID extends Serializa
     private final GenericRepository<T, ID> repository;
 
     public List<R> search() {
-        final Pageable pageable = PageRequest.of(0, 25);
-        final List<T> entities = this.repository.findAll(pageable).getContent();
+        final List<T> entities = this.repository.findAll();
         return new ArrayList<>();
     }
 

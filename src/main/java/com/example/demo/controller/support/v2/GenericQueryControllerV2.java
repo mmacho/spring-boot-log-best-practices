@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.validation.annotation.Validated;
@@ -37,11 +38,12 @@ public class GenericQueryControllerV2<T extends BaseEntity<ID>, ID extends Seria
         @NonNull
         private final ResponseMapper<R, T> mapper;
 
-        @GetMapping
+        @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE,
+                        MediaType.APPLICATION_XML_VALUE })
         @Timed
         public ResponseEntity<MappingJacksonValue> findAll(
                         @RequestParam(required = false, value = FIELDS) String... fields) {
-                final List<T> entities = service.getAll();
+                final List<T> entities = service.findAll();
                 final Response<List<R>> responses = mapper.toGenericResponse(entities);
                 final MappingJacksonValue filterResponse = filter(responses, BaseResponse.FIELDS_FILTER,
                                 fields);
@@ -49,14 +51,15 @@ public class GenericQueryControllerV2<T extends BaseEntity<ID>, ID extends Seria
                                 : ResponseEntity.ok().body(filterResponse);
         }
 
-        @GetMapping(value = MACHING)
+        @GetMapping(value = MACHING, produces = { MediaType.APPLICATION_JSON_VALUE,
+                        MediaType.APPLICATION_XML_VALUE })
         @Timed
         public ResponseEntity<MappingJacksonValue> matching(
                         @RequestParam(name = PAGE, defaultValue = DEFAULT_VALUE_PAGE) Integer page,
                         @RequestParam(name = SIZE, defaultValue = DEFAULT_VALUE_SIZE) Integer size,
-                        @RequestParam(required = false, name = FILTER) String filter,
-                        @RequestParam(required = false, name = SORT, defaultValue = DEFAULT_VALUE_SORT) String sort,
-                        @RequestParam(required = false, value = FIELDS) String... fields) {
+                        @RequestParam(required = false, name = FILTER) final String filter,
+                        @RequestParam(required = false, name = SORT, defaultValue = DEFAULT_VALUE_SORT) final String sort,
+                        @RequestParam(required = false, value = FIELDS) final String... fields) {
                 final Page<T> entities = service.matching(page, size, filter, sort);
                 final Response<Page<R>> responses = Response.success(mapper.toResponse(entities));
                 final MappingJacksonValue filterResponse = filter(responses, BaseResponse.FIELDS_FILTER,
@@ -65,7 +68,8 @@ public class GenericQueryControllerV2<T extends BaseEntity<ID>, ID extends Seria
                                 : ResponseEntity.ok().body(filterResponse);
         }
 
-        @GetMapping(value = ID)
+        @GetMapping(value = ID, produces = { MediaType.APPLICATION_JSON_VALUE,
+                        MediaType.APPLICATION_XML_VALUE })
         @Timed
         public ResponseEntity<MappingJacksonValue> findById(@PathVariable final ID id, WebRequest request,
                         @RequestParam(required = false, value = FIELDS) String... fields) {

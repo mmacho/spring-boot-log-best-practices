@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.example.demo.controller.customer.BaseController;
 import com.example.demo.domain.BaseEntity;
 import com.example.demo.repository.GenericRepository;
 

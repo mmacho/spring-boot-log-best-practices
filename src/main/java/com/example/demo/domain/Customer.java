@@ -4,13 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name = "customer")
 public class Customer extends BaseEntity<Long> {

@@ -39,8 +39,7 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID extends Serial
     }
 
     public List<T> findAll() {
-        final Pageable pageable = PageRequest.of(0, 25);
-        return this.repository.findAll(pageable).getContent();
+        return this.repository.findAll();
     }
 
     public T findbyId(@NonNull final ID id) throws ResourceNotFoundException {
@@ -50,7 +49,7 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID extends Serial
 
     @Transactional
 	public T create(@NonNull T domain) {
-        return this.repository.persist(domain);
+        return this.repository.save(domain);
 	}
 
 	@Transactional
@@ -58,7 +57,7 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID extends Serial
 		T entity = findbyId(id);
 		BeanUtils.copyProperties(domain, entity, BaseEntity_.ID, BaseEntity_.CREATED_AT, BaseEntity_.MODIFIED_AT);
 		try {
-			return this.repository.persist(entity);
+			return this.repository.save(entity);
 		} catch (OptimisticLockingFailureException e) {
 			throw StaleStateIdentifiedException
 					.forAggregateWith(MessageFormat.format("Confict to update entity with id {0}", id));

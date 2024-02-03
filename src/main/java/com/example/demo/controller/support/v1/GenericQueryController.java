@@ -44,7 +44,7 @@ public class GenericQueryController<T extends BaseEntity<ID>, ID extends Seriali
         @GetMapping
         @Timed
         public ResponseEntity<Response<List<R>>> findAll() {
-                final List<T> entities = service.getAll();
+                final List<T> entities = service.findAll();
                 return entities.isEmpty() ? ResponseEntity.noContent().build()
                                 : ResponseEntity.ok().body(mapper.toGenericResponse(entities));
         }

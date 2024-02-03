@@ -40,8 +40,6 @@ import org.springframework.web.client.RestTemplate;
 import com.example.demo.interceptor.rest.RequestResponseLoggingInterceptor;
 import com.example.demo.interceptor.rest.RestTemplateHeaderModifierInterceptor;
 
-import io.hypersistence.utils.spring.repository.BaseJpaRepositoryImpl;
-
 /**
  * Revisar
  * https://medium.com/@cizek.jy/spring-resttemplate-why-the-set-timeout-does-not-work-b75aaee076a3
@@ -115,7 +113,7 @@ public class RepositoryConfiguration {
 
 	@Configuration
 	@EnableCaching
-	@EnableJpaRepositories(basePackages = "com.example.demo.repository",  repositoryBaseClass = BaseJpaRepositoryImpl.class)
+	@EnableJpaRepositories(basePackages = "com.example.demo.repository")
 	@ComponentScan(basePackages = { "com.example.demo.repository" })
 	@EntityScan("com.example.demo.domain")
 	@EnableTransactionManagement
